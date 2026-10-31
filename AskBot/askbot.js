@@ -1,4 +1,5 @@
-import { askOpenRouter } from "./openRouter2.js";
+import { askBot } from "./openrouter2.js";
+import { marked } from "https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js";
 
 const form = document.getElementById("form");
 const input = document.getElementById("input");
@@ -23,8 +24,9 @@ form.addEventListener("submit", async (e) => {
   const placeholder = appendMessage("Thinking...", "bot loading");
   try {
     const reply = await askOpenRouter(text);
+    const formattedReply = marked.parse(reply, { gfm: true, breaks: true });
     placeholder.remove();
-    appendMessage(reply, "bot");
+    appendMessage(formattedReply, "bot");
   } catch (err) {
     placeholder.remove();
     appendMessage("Error: " + (err.message || err), "bot error");
